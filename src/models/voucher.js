@@ -1,21 +1,18 @@
 const mongoose = require("mongoose");
+const timestampPlugin = require("mongoose-timestamp");
 
 const voucherSchema = new mongoose.Schema({
   code: {
     type: String,
-    require: true,
+    required: true,
   },
-
   value: {
     type: Number,
-    require: true,
-  },
-
-  created_at: {
-    type: Number,
-    default: Math.round(+new Date() / 1000),
+    required: true,
   },
 });
+
+voucherSchema.plugin(timestampPlugin);
 
 let Voucher = mongoose.model("Voucher", voucherSchema);
 

@@ -1,16 +1,15 @@
 const mongoose = require("mongoose");
+const timestampPlugin = require("mongoose-timestamp");
 
 const CartSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
-
   cart_id: {
     type: String,
     require: false,
   },
-
   status: {
     type: String,
     require: true,
@@ -21,12 +20,6 @@ const CartSchema = new mongoose.Schema({
     require: true,
     default: "",
   },
-
-  created_at: {
-    type: Number,
-    default: Math.round(+new Date() / 1000),
-  },
-
   product_list: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -39,6 +32,8 @@ const CartSchema = new mongoose.Schema({
   },
 });
 
-let Cart = mongoose.model("Cart", CartSchema);
+CartSchema.plugin(timestampPlugin);
+
+const Cart = mongoose.model("Cart", CartSchema);
 
 module.exports = { Cart };

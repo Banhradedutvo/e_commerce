@@ -1,27 +1,23 @@
 const mongoose = require("mongoose");
+const timestampPlugin = require("mongoose-timestamp");
 
 const bannerSchema = new mongoose.Schema({
   status: {
     type: Number,
     default: 4,
   },
-
-  // code: {
-  //   type: String,
-  //   require: true,
-  //   unique: true,
-  // },
-
-  created_at: {
-    type: Number,
-    default: Math.round(+new Date() / 1000),
+  code: {
+    type: String,
+    required: true,
+    unique: true,
   },
-
   imageUrl: {
     type: String,
-    require: false,
+    required: false,
   },
 });
+
+bannerSchema.plugin(timestampPlugin);
 
 let Banner = mongoose.model("Banner", bannerSchema);
 

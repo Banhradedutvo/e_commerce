@@ -1,59 +1,48 @@
 const mongoose = require("mongoose");
+const timestampPlugin = require("mongoose-timestamp");
 
 const BlogSchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
   },
-
   title1: {
     type: String,
-    require: true,
+    required: true,
   },
-
   title2: {
     type: String,
-    require: false,
+    required: false,
   },
-
   title: {
     type: String,
-    require: false,
+    required: false,
   },
-
   imageUrl: {
     type: String,
-    require: false,
+    required: false,
   },
-
   description: {
     type: String,
-    require: true,
+    required: true,
   },
-
   content1: {
     type: String,
-    require: true,
+    required: true,
   },
-
   content2: {
     type: String,
-    require: false,
+    required: false,
   },
-
   comment: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Comment",
     },
   ],
-
-  created_at: {
-    type: Number,
-    require: true,
-    default: Math.round(+new Date() / 1000),
-  },
 });
+
+BlogSchema.plugin(timestampPlugin);
 
 let Blog = mongoose.model("Blog", BlogSchema);
 

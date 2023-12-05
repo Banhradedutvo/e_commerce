@@ -1,53 +1,48 @@
 const mongoose = require("mongoose");
+const timestampPlugin = require("mongoose-timestamp");
 
 const UserSchema = new mongoose.Schema({
   user_name: {
     type: String,
-    require: true,
-    minlenght: 6,
-    maxlenght: 20,
-    unique: true, // ko trùng user,
+    required: true,
+    minlength: 6,
+    maxlength: 20,
+    unique: true,
   },
-
   password: {
     type: String,
-    require: true,
-    minlenght: 6,
+    required: true,
+    minlength: 6,
   },
-
   role: {
     type: String,
-    require: false,
+    required: false,
     default: "customer",
   },
-
   full_name: {
     type: String,
-    require: true,
+    required: true,
   },
   email: {
     type: String,
-    require: false,
-    minlenght: 6,
-    maxlenght: 50,
+    required: false,
+    minlength: 6,
+    maxlength: 50,
     unique: true,
   },
-
   phone: {
     type: String,
-    require: false,
-    minlenght: 6,
-    maxlenght: 20,
+    required: false,
+    minlength: 6,
+    maxlength: 20,
   },
-
   ward_id: {
     type: String,
-    require: false,
+    required: false,
   },
-
   address_detail: {
     type: String,
-    require: false,
+    required: false,
   },
   cart: [
     {
@@ -55,18 +50,9 @@ const UserSchema = new mongoose.Schema({
       ref: "Cart",
     },
   ],
-
-  created_at: {
-    require: true,
-    type: Number,
-    default: Math.round(+new Date() / 1000),
-  },
-
-  updated: {
-    require: false,
-    type: String,
-  },
 });
+
+UserSchema.plugin(timestampPlugin);
 
 let User = mongoose.model("User", UserSchema);
 

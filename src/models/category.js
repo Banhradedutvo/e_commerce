@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const timestampPlugin = require("mongoose-timestamp");
 
 const CategorySchema = new mongoose.Schema({
   category_id: {
@@ -14,12 +15,6 @@ const CategorySchema = new mongoose.Schema({
     require: false,
     type: String,
   },
-  created_at: {
-    require: false,
-    type: Number,
-    default: Math.round(+new Date() / 1000),
-  },
-
   product: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -28,6 +23,8 @@ const CategorySchema = new mongoose.Schema({
   ],
 });
 
-let Category = mongoose.model("Category", CategorySchema);
+CategorySchema.plugin(timestampPlugin);
+
+const Category = mongoose.model("Category", CategorySchema);
 
 module.exports = { Category };

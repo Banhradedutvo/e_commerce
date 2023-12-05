@@ -1,27 +1,24 @@
 const mongoose = require("mongoose");
+const timestampPlugin = require("mongoose-timestamp");
 
 const ProductInCartSchema = new mongoose.Schema({
   cart: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Cart",
   },
-
   quantity: {
     type: Number,
-    require: true,
+    required: true,
     default: 0,
   },
-
   product: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
     unique: true,
   },
-  created_at: {
-    type: Number,
-    default: Math.round(+new Date() / 1000),
-  },
 });
+
+ProductInCartSchema.plugin(timestampPlugin);
 
 let ProductInCart = mongoose.model("ProductInCart", ProductInCartSchema);
 

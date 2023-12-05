@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const timestampPlugin = require("mongoose-timestamp");
 
 const ProductSchema = new mongoose.Schema({
   product_id: {
@@ -31,7 +32,6 @@ const ProductSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Company",
   },
-
   quantity: {
     type: Number,
     require: true,
@@ -44,10 +44,6 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
-  created_at: {
-    type: Number,
-    default: Math.round(+new Date() / 1000),
-  },
   blog: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -59,6 +55,8 @@ const ProductSchema = new mongoose.Schema({
     require: false,
   },
 });
+
+ProductSchema.plugin(timestampPlugin);
 
 const Product = mongoose.model("Product", ProductSchema);
 
