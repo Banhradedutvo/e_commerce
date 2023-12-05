@@ -1,6 +1,7 @@
 const { Product } = require("../models/product");
 const { Category } = require("../models/category");
 const { Company } = require("../models/company");
+const productValidator = require("../middlewares/validators/productValidator");
 const multer = require("multer");
 
 const storage = multer.diskStorage({
@@ -32,11 +33,14 @@ const productController = {
         company,
       } = req.body;
 
-      // Kiểm tra các trường bắt buộc
-      if (!product_id || !name || !category || !price || !quantity || !company) {
+      // Kiểm tra dữ liệu đầu vào sử dụng validator
+      const validationResult = productValidator.validate(req.body);
+
+      if (validationResult.error) {
         return res.status(400).json({
           status: "error",
-          message: "Thiếu thông tin bắt buộc",
+          message: "Dữ liệu không hợp lệ",
+          error: validationResult.error.details[0].message,
         });
       }
 
@@ -49,30 +53,7 @@ const productController = {
         });
       }
 
-      // Kiểm tra giá trị hợp lệ
-      if (price <= 0 || quantity <= 0) {
-        return res.status(400).json({
-          status: "error",
-          message: "Giá và số lượng phải lớn hơn 0",
-        });
-      }
-
-      // Kiểm tra định dạng hợp lệ của URL hình ảnh
-      const imageUrlRegex = /^(http(s)?:\/\/)(www\.)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/;
-      if (!imageUrlRegex.test(imageUrl)) {
-        return res.status(400).json({
-          status: "error",
-          message: "URL hình ảnh không hợp lệ",
-        });
-      }
-
-      // Kiểm tra độ dài hợp lệ của mô tả
-      if (description.length < 10 || description.length > 1000) {
-        return res.status(400).json({
-          status: "error",
-          message: "Độ dài mô tả phải từ 10 đến 1000 ký tự",
-        });
-      }
+      // Tiếp tục xử lý khi dữ liệu hợp lệ
       const newProduct = new Product({
         product_id,
         name,
